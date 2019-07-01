@@ -22,6 +22,12 @@ namespace SkyLar
 
         static async Task Main(string[] args)
         {
+            if(args.Contains("--configure"))
+            {
+                FileUtilities.WriteJson(SkyLarConfig.Empty, "Config.json");
+                return;
+            }
+
             try
             {
                 var app = new Program(args);

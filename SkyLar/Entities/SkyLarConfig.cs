@@ -15,6 +15,12 @@ namespace SkyLar.Entities
         [JsonProperty]
         public SkyLarDiscordConfig Discord { get; private set; } = new SkyLarDiscordConfig();
 
+        [JsonProperty]
+        public SkyLarCommandsNextConfig CommandsNext { get; private set; } = new SkyLarCommandsNextConfig();
+
+        [JsonProperty]
+        public SkyLarInteractivityConfig Interactivity { get; private set; } = new SkyLarInteractivityConfig();
+
         public static SkyLarConfig GetOrCreateDefault()
         {
             if (!FileUtilities.Exists("Config.json"))

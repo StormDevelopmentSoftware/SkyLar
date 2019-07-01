@@ -25,7 +25,7 @@ namespace SkyLar.Utilities
                     if (res.IsSuccessStatusCode)
                         json = await res.Content.ReadAsStringAsync();
 
-                    var jo = FileUtilities.ParseJson(json);
+                    var jo = FileUtilities.FromJson(json);
 
                     if (jo != null && jo["shards"] != null)
                         return jo["shards"].Value<int>();

@@ -1,16 +1,25 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using DSharpPlus;
+using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
+using DSharpPlus.Interactivity;
+using DSharpPlus.Lavalink;
+using Microsoft.Extensions.DependencyInjection;
 using SkyLar.Entities;
 
 namespace SkyLar
 {
     public class SkyLarBot
     {
-        public int ShardId { get; }
-        public int ShardCount { get; }
-        public SkyLarConfig Config { get; }
-        public DiscordClient Discord { get; }
+        public int ShardId { get; private set; }
+        public int ShardCount { get; private set; }
+        public SkyLarConfig Config { get; private set; }
+        public DiscordClient Discord { get; private set; }
+        public CommandsNextExtension CommandsNext { get; private set; }
+        public InteractivityExtension Interactivity { get; private set; }
+        public LavalinkExtension Lavalink { get; private set; }
+        public IServiceProvider Services { get; private set; }
 
         public SkyLarBot(int shard_id, int shard_count, SkyLarConfig config)
         {
@@ -29,7 +38,7 @@ namespace SkyLar
                 await e.Client.UpdateStatusAsync(new DiscordActivity
                 {
                     ActivityType = ActivityType.Streaming,
-                    Name = "skylar help | " + e.Client.Ping + "ms | shard " + (this.ShardId + 1),
+                    Name = $"skylar help | {e.Client.Ping}ms",
                     StreamUrl = "https://twitch.tv/#"
                 });
             };
@@ -39,10 +48,19 @@ namespace SkyLar
                 await e.Client.UpdateStatusAsync(new DiscordActivity
                 {
                     ActivityType = ActivityType.Streaming,
-                    Name = "skylar help | " + e.Ping + "ms | shard " + (this.ShardId + 1),
+                    Name = $"skylar help | {e.Ping}ms",
                     StreamUrl = "https://twitch.tv/#"
                 });
             };
+
+            this.Services = new ServiceCollection()
+                .AddSingleton(this)
+                .AddSingleton(this.Discord)
+                .BuildServiceProvider();
+
+            this.Lavalink = this.Discord.UseLavalink();
+            this.Interactivity = this.Discord.UseInteractivity(this.Config.Interactivity.Build());
+            this.CommandsNext = this.Discord.UseCommandsNext(this.Config.CommandsNext.Build(this.Services));
         }
 
         public async Task InitializeAsync()
