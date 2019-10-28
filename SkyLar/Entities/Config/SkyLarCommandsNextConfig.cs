@@ -29,7 +29,8 @@ namespace SkyLar.Entities.Config
                 DmHelp = this.DmHelp,
                 EnableDms = this.EnableDms,
                 EnableMentionPrefix = this.EnableMentionPrefix,
-                Services = services
+                Services = services,
+                EnableDefaultHelp = true
             };
         }
     }

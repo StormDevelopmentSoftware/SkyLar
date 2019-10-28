@@ -16,7 +16,7 @@ namespace SkyLar
         public IReadOnlyList<string> Arguments { get; }
         public static Program Instance { get; private set; }
 
-        private SkyLarConfig _config;
+        private SkyLarConfig  _config;
         private CancellationTokenSource _cts;
         private ConcurrentDictionary<int, SkyLarBot> _shards;
 

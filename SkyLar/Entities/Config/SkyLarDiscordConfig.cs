@@ -41,9 +41,9 @@ namespace SkyLar.Entities.Config
                 GatewayCompressionLevel = this.GatewayCompressionLevel,
                 HttpTimeout = this.HttpTimeout,
                 MessageCacheSize = this.MessageCacheSize,
-                LogLevel = this.LogLevel,
+                LogLevel = LogLevel.Debug,
                 LargeThreshold = this.LargeThreshold,
-                UseInternalLogHandler = false
+                UseInternalLogHandler = true
             };
         }
     }

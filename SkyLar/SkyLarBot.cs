@@ -33,6 +33,7 @@ namespace SkyLar
                 ShardCount = this.ShardCount
             });
 
+
             this.Discord.Ready += async e =>
             {
                 await e.Client.UpdateStatusAsync(new DiscordActivity
@@ -61,6 +62,8 @@ namespace SkyLar
             this.Lavalink = this.Discord.UseLavalink();
             this.Interactivity = this.Discord.UseInteractivity(this.Config.Interactivity.Build());
             this.CommandsNext = this.Discord.UseCommandsNext(this.Config.CommandsNext.Build(this.Services));
+            CommandsNext.RegisterCommands<HelpMeCommand>();
+            CommandsNext.SetHelpFormatter<HelpFormatter>();
         }
 
         public async Task InitializeAsync()
