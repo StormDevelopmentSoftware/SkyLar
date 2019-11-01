@@ -12,7 +12,7 @@ namespace SkyLar.Commands
     public partial class DeveloperCommands : BaseCommandModule
     {
         [Command("sudo")]
-        [CommandCategory(Categories.Developer)]
+        [CommandCategory(Category.Developer)]
         [DeveloperCommand]
         public async Task SudoCommand(CommandContext ctx, DiscordMember member, string content)
         {

@@ -15,7 +15,7 @@ namespace SkyLar.Commands
     public partial class DeveloperCommands : BaseCommandModule
     {
         [Command("devstatus")]
-        [CommandCategory(Categories.Developer)]
+        [CommandCategory(Category.Developer)]
         [DeveloperCommand]
         public async Task DevStatusCommand(CommandContext ctx)
         {

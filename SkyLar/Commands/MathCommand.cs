@@ -13,8 +13,9 @@ namespace SkyLar.Commands
     public partial class InfoCommands : BaseCommandModule
     {
         [Command("math")]
-        [CommandCategory(Categories.Info)]
+        [CommandCategory(Category.Info)]
         [Description("Evaluates a math expression.\nValid functions: [Functions](https://github.com/ncalc/ncalc/wiki/Functions)")]
+        [CommandExamples("math 1+1", "math Cos(Pi)", "math 6*3")]
         public async Task MathCommand(CommandContext ctx, [RemainingText] string expression)
         {
             try
