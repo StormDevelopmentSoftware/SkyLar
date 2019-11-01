@@ -5,15 +5,15 @@ namespace SkyLar.Attributes
 {
     public class CommandCategory : Attribute
     {
-        public Categories Category;
+        public Category Category;
 
-        public CommandCategory(Categories category)
+        public CommandCategory(Category category)
         {
             Category = category;
         }
     }
 
-    public enum Categories
+    public enum Category
     {
         Developer,
         Info,
