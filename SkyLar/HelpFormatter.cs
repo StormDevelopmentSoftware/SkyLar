@@ -21,8 +21,9 @@ namespace SkyLar
         public List<Command> DeveloperCommands = new List<Command>();
         public List<Command> UtilityCommands = new List<Command>();
 
-        public Dictionary<Categories, List<Command>> dict = new Dictionary<Categories, List<Command>>();
+        public Dictionary<Category, List<Command>> dict = new Dictionary<Category, List<Command>>();
         public Dictionary<List<Command>, string> evalText = new Dictionary<List<Command>, string>();
+        public Dictionary<Command, string[]> examples = new Dictionary<Command, string[]>();
 
         public HelpFormatter(CommandContext ctx) : base(ctx)
         {
@@ -36,7 +37,7 @@ namespace SkyLar
 
             _ctx = ctx;
 
-            dict = new Dictionary<Categories, List<Command>> { { Categories.Info, InfoCommands }, { Categories.Developer, DeveloperCommands }, { Categories.Utility, UtilityCommands } };
+            dict = new Dictionary<Category, List<Command>> { { Category.Info, InfoCommands }, { Category.Developer, DeveloperCommands }, { Category.Utility, UtilityCommands } };
 
             evalText = new Dictionary<List<Command>, string> { { InfoCommands, ":information_source: • Information" }, { DeveloperCommands, "<:netcore:378151776320487424> • Developer" }, { UtilityCommands, ":tools: • Utility" } };
 
@@ -48,7 +49,10 @@ namespace SkyLar
                         var check = cmd.Value.RunChecksAsync(ctx, true).GetAwaiter().GetResult().Any();
                         if (!check)
                             dict[((CommandCategory)att).Category].Add(cmd.Value);
-
+                    }
+                    if (att is CommandExamples)
+                    {
+                        examples.Add(cmd.Value, ((CommandExamples)att).Examples);
                     }
                 }
         }
@@ -101,8 +105,9 @@ namespace SkyLar
 
                 EmbedBuilder.AddField(":pen_ballpoint: Arguments", sb.ToString().Trim(), false);
             }
+            if (examples.ContainsKey(command))
+                EmbedBuilder.AddField(":mag_right: Examples", string.Join('\n', examples[command].Select(x => Formatter.InlineCode(_ctx.Prefix + x))));
 
-            EmbedBuilder.AddField(":mag_right: Examples", "S a m p l e   T e x t ");
             return this;
         }
 
