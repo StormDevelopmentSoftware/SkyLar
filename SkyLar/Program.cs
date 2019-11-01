@@ -100,9 +100,7 @@ namespace SkyLar
         async Task ShutdownShardsAsync()
         {
             foreach (var (i, bot) in _shards)
-            {
                 await bot.ShutdownAsync();
-            }
         }
     }
 }
