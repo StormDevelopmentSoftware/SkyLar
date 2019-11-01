@@ -16,6 +16,7 @@ namespace SkyLar.Attributes
     public enum Categories
     {
         Developer,
-        Info
+        Info,
+        Utility
     }
 }

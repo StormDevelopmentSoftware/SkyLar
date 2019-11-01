@@ -6,6 +6,7 @@ using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Lavalink;
 using Microsoft.Extensions.DependencyInjection;
+using SkyLar.Commands;
 using SkyLar.Entities;
 
 namespace SkyLar
@@ -62,7 +63,10 @@ namespace SkyLar
             this.Lavalink = this.Discord.UseLavalink();
             this.Interactivity = this.Discord.UseInteractivity(this.Config.Interactivity.Build());
             this.CommandsNext = this.Discord.UseCommandsNext(this.Config.CommandsNext.Build(this.Services));
-            CommandsNext.RegisterCommands<HelpMeCommand>();
+
+            CommandsNext.RegisterCommands<InfoCommands>();
+            CommandsNext.RegisterCommands<DeveloperCommands>();
+            CommandsNext.RegisterCommands<UtilityCommands>();
             CommandsNext.SetHelpFormatter<HelpFormatter>();
         }
 

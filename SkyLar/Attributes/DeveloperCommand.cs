@@ -11,7 +11,7 @@ namespace SkyLar.Attributes
     {
         public override async Task<bool> ExecuteCheckAsync(CommandContext ctx, bool help)
         {
-            if (ctx.User.Id == 0002 || ctx.User.Id == 143466929615667201)
+            if (ctx.User.Id == 163324170556538880 || ctx.User.Id == 143466929615667201)
                 return true;
 
             if (!help)
