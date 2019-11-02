@@ -21,6 +21,9 @@ namespace SkyLar.Entities
         [JsonProperty]
         public SkyLarInteractivityConfig Interactivity { get; private set; } = new SkyLarInteractivityConfig();
 
+        [JsonProperty]
+        public SkylarDatabaseConfig Database { get; private set; } = new SkylarDatabaseConfig();
+
         public static SkyLarConfig GetOrCreateDefault()
         {
             if (!FileUtilities.Exists("Config.json"))
