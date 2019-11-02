@@ -1,5 +1,5 @@
-﻿// File LocalizationManager.cs created by Animadoria (me@animadoria.cf) at 11/2/2019 12:29 AM.
-// (C) Animadoria 2019 - All Rights Reserved
+﻿// File LocalizationManager.cs for the SkyLar Discord bot at 11/2/2019 12:29 AM.
+// (C) Storm Development Software - 2019. All Rights Reserved
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,6 +14,7 @@ namespace SkyLar.Localization
         {
             var directory = Directory.GetCurrentDirectory() + "/localizations/";
             var files = Directory.GetFiles(directory, "*.json");
+            
             foreach (var file in files)
             {
                 var locale = JsonConvert.DeserializeObject<Localization>(File.ReadAllText(file));
