@@ -25,17 +25,10 @@ namespace SkyLar.Commands
             if (json["status"].ToString() == "success")
             {
                 var url = json["message"].ToString();
-                await ctx.RespondWithEmbedAsync(new DiscordEmbedBuilder()
+                await ctx.RespondWithEmbedAsync(new DiscordEmbedBuilder(ctx.BaseEmbed())
                 {
                     ImageUrl = url,
                     Title = ":dog: Random Dog",
-                    Timestamp = DateTime.Now,
-                    Color = DiscordColor.Blurple,
-                    Footer = new DiscordEmbedBuilder.EmbedFooter()
-                    {
-                        Text = "Requested by " + ctx.User.Username + "#" + ctx.User.Discriminator,
-                        IconUrl = ctx.User.AvatarUrl
-                    }
                 });
             }
             else
