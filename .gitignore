@@ -681,3 +681,5 @@ DerivedData/
 # Local History for Visual Studio
 
 # BeatPulse healthcheck temp database
+
+.vscode/
