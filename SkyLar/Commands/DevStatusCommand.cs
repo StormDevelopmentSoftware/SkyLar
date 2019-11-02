@@ -8,7 +8,6 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using Humanizer;
 using SkyLar.Attributes;
-using SkyLar.Localization;
 using SkyLar.Utilities;
 
 namespace SkyLar.Commands

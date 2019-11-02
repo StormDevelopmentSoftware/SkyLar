@@ -7,7 +7,6 @@ using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Lavalink;
 using Microsoft.Extensions.DependencyInjection;
-using SkyLar.Commands;
 using SkyLar.Entities;
 using SkyLar.Localization;
 

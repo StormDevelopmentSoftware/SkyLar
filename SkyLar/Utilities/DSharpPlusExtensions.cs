@@ -1,6 +1,5 @@
 ﻿// File DSharpPlusExtensions.cs for the SkyLar Discord bot at 11/1/2019 8:15 PM.
 // (C) Storm Development Software - 2019. All Rights Reserved
-using System;
 using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;

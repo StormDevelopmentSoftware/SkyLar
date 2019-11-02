@@ -1,6 +1,5 @@
 ﻿// File DeveloperCommand.cs for the SkyLar Discord bot at 28/10/2019 19:09.
 // (C) Storm Development Software - 2019. All Rights Reserved
-using System;
 using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
