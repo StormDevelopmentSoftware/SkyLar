@@ -17,6 +17,7 @@ namespace SkyLar.Attributes
     {
         Developer,
         Info,
-        Utility
+        Utility,
+        Fun
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
@@ -66,9 +67,8 @@ namespace SkyLar
             this.Interactivity = this.Discord.UseInteractivity(this.Config.Interactivity.Build());
             this.CommandsNext = this.Discord.UseCommandsNext(this.Config.CommandsNext.Build(this.Services));
 
-            CommandsNext.RegisterCommands<InfoCommands>();
-            CommandsNext.RegisterCommands<DeveloperCommands>();
-            CommandsNext.RegisterCommands<UtilityCommands>();
+           
+            CommandsNext.RegisterCommands(Assembly.GetEntryAssembly());
             CommandsNext.SetHelpFormatter<HelpFormatter>();
         }
 

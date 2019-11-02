@@ -20,6 +20,7 @@ namespace SkyLar
         public List<Command> InfoCommands = new List<Command>();
         public List<Command> DeveloperCommands = new List<Command>();
         public List<Command> UtilityCommands = new List<Command>();
+        public List<Command> FunCommands = new List<Command>();
 
         public Dictionary<Category, List<Command>> dict = new Dictionary<Category, List<Command>>();
         public Dictionary<List<Command>, string> evalText = new Dictionary<List<Command>, string>();
@@ -37,9 +38,9 @@ namespace SkyLar
 
             _ctx = ctx;
 
-            dict = new Dictionary<Category, List<Command>> { { Category.Info, InfoCommands }, { Category.Developer, DeveloperCommands }, { Category.Utility, UtilityCommands } };
+            dict = new Dictionary<Category, List<Command>> { { Category.Info, InfoCommands }, { Category.Developer, DeveloperCommands }, { Category.Utility, UtilityCommands }, { Category.Fun, FunCommands } };
 
-            evalText = new Dictionary<List<Command>, string> { { InfoCommands, ":information_source: • Information" }, { DeveloperCommands, "<:netcore:378151776320487424> • Developer" }, { UtilityCommands, ":tools: • Utility" } };
+            evalText = new Dictionary<List<Command>, string> { { InfoCommands, ":information_source: • Information" }, { DeveloperCommands, "<:netcore:378151776320487424> • Developer" }, { UtilityCommands, ":tools: • Utility" }, { FunCommands, ":balloon: • Fun" } };
 
             foreach (var cmd in CommandsNext.RegisteredCommands)
                 foreach (Attribute att in cmd.Value.CustomAttributes)
