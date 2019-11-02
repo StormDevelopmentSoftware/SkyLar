@@ -26,5 +26,6 @@
   <ItemGroup>
     <Folder Include="Attributes\" />
     <Folder Include="Commands\" />
+    <Folder Include="Localization\" />
   </ItemGroup>
 </Project>

@@ -8,6 +8,7 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using Humanizer;
 using SkyLar.Attributes;
+using SkyLar.Localization;
 using SkyLar.Utilities;
 
 namespace SkyLar.Commands
@@ -26,6 +27,8 @@ namespace SkyLar.Commands
             {
                 Title = "SkyLar status"
             }.AddField("OS", os, true).AddField("RAM", ram.Bytes().Humanize("#.## MB"), true));
+
+            Console.WriteLine(LocalizationManager.Localizations[0]["test"]);
         }
     }
 }

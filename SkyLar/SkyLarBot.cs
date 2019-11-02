@@ -8,6 +8,7 @@ using DSharpPlus.Lavalink;
 using Microsoft.Extensions.DependencyInjection;
 using SkyLar.Commands;
 using SkyLar.Entities;
+using SkyLar.Localization;
 
 namespace SkyLar
 {
@@ -24,6 +25,7 @@ namespace SkyLar
 
         public SkyLarBot(int shard_id, int shard_count, SkyLarConfig config)
         {
+            LocalizationManager.Load();
             this.ShardId = shard_id;
             this.ShardCount = shard_count;
             this.Config = config;
