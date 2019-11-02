@@ -45,7 +45,7 @@ namespace SkyLar.Utilities
 
             using (var fs = fileinfo.OpenRead())
             using (var sr = new StreamReader(fs))
-                return JsonConvert.DeserializeObject<T>(sr.ReadToEnd());
+                return JsonConvert.DeserializeObject<T>(sr.ReadToEnd(), DEFAULT_JSON_SETTINGS);
         }
 
         public static bool Exists(string path)
