@@ -15,7 +15,7 @@ namespace Filesystem
             }
             return instance;
         }
-         public static Server Instance(string connectionString)
+        public static Server Instance(string connectionString)
         {
             if (instance == null)
             {

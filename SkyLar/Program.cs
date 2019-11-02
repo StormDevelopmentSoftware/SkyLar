@@ -16,13 +16,13 @@ namespace SkyLar
         public IReadOnlyList<string> Arguments { get; }
         public static Program Instance { get; private set; }
 
-        private SkyLarConfig  _config;
+        private SkyLarConfig _config;
         private CancellationTokenSource _cts;
         private ConcurrentDictionary<int, SkyLarBot> _shards;
 
         static async Task Main(string[] args)
         {
-            if(args.Contains("--configure"))
+            if (args.Contains("--configure"))
             {
                 FileUtilities.WriteJson(SkyLarConfig.Empty, "Config.json");
                 return;

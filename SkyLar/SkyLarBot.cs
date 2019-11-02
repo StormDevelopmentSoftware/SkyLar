@@ -66,7 +66,7 @@ namespace SkyLar
             this.Interactivity = this.Discord.UseInteractivity(this.Config.Interactivity.Build());
             this.CommandsNext = this.Discord.UseCommandsNext(this.Config.CommandsNext.Build(this.Services));
 
-           
+
             CommandsNext.RegisterCommands(Assembly.GetEntryAssembly());
             CommandsNext.SetHelpFormatter<HelpFormatter>();
         }

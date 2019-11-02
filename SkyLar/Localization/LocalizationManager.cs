@@ -13,7 +13,7 @@ namespace SkyLar.Localization
         {
             var directory = Directory.GetCurrentDirectory() + "/localizations/";
             var files = Directory.GetFiles(directory, "*.json");
-            
+
             foreach (var file in files)
             {
                 var locale = JsonConvert.DeserializeObject<Localization>(File.ReadAllText(file));

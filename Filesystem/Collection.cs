@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using MongoDB.Driver;
 using System.Linq.Expressions;
 
-namespace Filesystem 
+namespace Filesystem
 {
     public class Collection<T>
     {
         public string CollectionName { get; internal set; }
         public Database Database { get; internal set; }
-        public List<T> Documents {get;internal set;}
+        public List<T> Documents { get; internal set; }
         public Collection(string name, Database database)
         {
             IMongoDatabase db = database.Server.Client.GetDatabase(database.DatabaseName);
@@ -33,16 +33,16 @@ namespace Filesystem
             this.Database.Server.Client.GetDatabase(this.Database.DatabaseName).
             GetCollection<T>(this.CollectionName).InsertOne(Document);
         }
-        public void DeleteDocument(Expression<Func<T,bool>> filter)
+        public void DeleteDocument(Expression<Func<T, bool>> filter)
         {
             this.Database.Server.Client.GetDatabase(this.Database.DatabaseName).
             GetCollection<T>(this.CollectionName).DeleteOne(filter);
         }
 
-        public void UpdateDocument(Expression<Func<T,bool>> filter, T update)
+        public void UpdateDocument(Expression<Func<T, bool>> filter, T update)
         {
             this.Database.Server.Client.GetDatabase(this.Database.DatabaseName).
-            GetCollection<T>(this.CollectionName).ReplaceOne(filter,update);
+            GetCollection<T>(this.CollectionName).ReplaceOne(filter, update);
         }
         public void Refresh()
         {
