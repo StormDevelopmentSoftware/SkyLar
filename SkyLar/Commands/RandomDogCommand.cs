@@ -1,5 +1,5 @@
-﻿// File RandomDogCommand.cs created by Animadoria (me@animadoria.cf) at 11/2/2019 2:28 PM.
-// (C) Animadoria 2019 - All Rights Reserved
+﻿// File RandomDogCommand.cs for the SkyLar Discord bot at 11/2/2019 2:28 PM.
+// (C) Storm Development Software - 2019. All Rights Reserved
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;

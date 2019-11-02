@@ -1,5 +1,5 @@
-﻿// File AvatarCommand.cs created by Animadoria (me@animadoria.cf) at 11/1/2019 8:11 PM.
-// (C) Animadoria 2019 - All Rights Reserved
+﻿// File AvatarCommand.cs created for the SkyLar Discord bot at 11/1/2019 8:11 PM.
+// (C) Storm Development Software - 2019. All Rights Reserved
 using System;
 using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;

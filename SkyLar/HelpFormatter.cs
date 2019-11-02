@@ -29,10 +29,9 @@ namespace SkyLar
         public HelpFormatter(CommandContext ctx) : base(ctx)
         {
 
-            EmbedBuilder = new DiscordEmbedBuilder()
+            EmbedBuilder = new DiscordEmbedBuilder(ctx.BaseEmbed())
             {
                 Title = ":question: **Help**",
-                Color = DiscordColor.Blurple
             };
 
 

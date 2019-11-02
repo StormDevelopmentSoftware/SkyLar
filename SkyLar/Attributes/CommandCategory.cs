@@ -1,5 +1,5 @@
-﻿// File CommandCategory.cs created by Animadoria (me@animadoria.cf) at 27/10/2019 21:16.
-// (C) Animadoria 2019 - All Rights Reserved
+﻿// File CommandCategory.cs for the SkyLar Discord bot at 27/10/2019 21:16.
+// (C) Storm Development Software - 2019. All Rights Reserved
 using System;
 namespace SkyLar.Attributes
 {

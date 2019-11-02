@@ -1,5 +1,5 @@
-﻿// File StringExtensions.cs created by Animadoria (me@animadoria.cf) at 29/10/2019 19:18.
-// (C) Animadoria 2019 - All Rights Reserved
+﻿// File StringExtensions.cs for the SkyLar Discord bot at 29/10/2019 19:18.
+// (C) Storm Development Software - 2019. All Rights Reserved
 using System;
 using System.Collections.Generic;
 using System.Linq;

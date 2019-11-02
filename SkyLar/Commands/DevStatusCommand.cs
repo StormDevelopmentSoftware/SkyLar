@@ -1,5 +1,5 @@
-﻿// File DevStatusCommand.cs created by Animadoria (me@animadoria.cf) at 11/1/2019 8:38 PM.
-// (C) Animadoria 2019 - All Rights Reserved
+﻿// File DevStatusCommand.cs for the SkyLar Discord bot at 11/1/2019 8:38 PM.
+// (C) Storm Development Software - 2019. All Rights Reserved
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -20,15 +20,19 @@ namespace SkyLar.Commands
         [DeveloperCommand]
         public async Task DevStatusCommand(CommandContext ctx)
         {
+            GC.Collect();
             var os = Environment.OSVersion.VersionString;
             var ram = Process.GetCurrentProcess().WorkingSet64;
-            var memory = GC.GetTotalMemory(true);
-            await ctx.RespondWithEmbedAsync(new DiscordEmbedBuilder()
+            await ctx.RespondWithEmbedAsync(new DiscordEmbedBuilder(ctx.BaseEmbed())
             {
                 Title = "SkyLar status"
-            }.AddField("OS", os, true).AddField("RAM", ram.Bytes().Humanize("#.## MB"), true));
-
-            Console.WriteLine(LocalizationManager.Localizations[0]["test"]);
+            }.AddField("OS", os, true)
+            .AddField("RAM", ram.Bytes().Humanize("#.## MB"), true)
+            .AddField("Ping", ctx.Client.Ping + "ms", true)
+            .AddField("DSharpPlus", ctx.Client.VersionString, true)
+            .AddField("Guilds", ctx.Client.Guilds.Count.ToString(), true));
         }
+
     }
+
 }

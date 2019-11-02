@@ -1,5 +1,5 @@
-﻿// File DeveloperCommand.cs created by Animadoria (me@animadoria.cf) at 28/10/2019 19:09.
-// (C) Animadoria 2019 - All Rights Reserved
+﻿// File DeveloperCommand.cs for the SkyLar Discord bot at 28/10/2019 19:09.
+// (C) Storm Development Software - 2019. All Rights Reserved
 using System;
 using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;

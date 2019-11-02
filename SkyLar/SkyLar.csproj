@@ -28,4 +28,13 @@
     <Folder Include="Commands\" />
     <Folder Include="Localization\" />
   </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <StandardHeader IncludeInNewFiles="True" Text="File ${FileName} created for the SkyLar Discord bot at ${Date} ${Time}.&#xA;(C) Storm Development Software - 2019. All Rights Reserved" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>

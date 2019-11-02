@@ -1,5 +1,5 @@
-﻿// File Localization.cs created by Animadoria (me@animadoria.cf) at 11/2/2019 12:14 AM.
-// (C) Animadoria 2019 - All Rights Reserved
+﻿// File Localization.cs for the SkyLar Discord bot at 11/2/2019 12:14 AM.
+// (C) Storm Development Software - 2019. All Rights Reserved
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
