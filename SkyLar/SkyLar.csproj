@@ -19,12 +19,12 @@
     <PackageReference Include="DSharpPlus.Interactivity" Version="4.0.0-nightly-00633" />
     <PackageReference Include="DSharpPlus.Lavalink" Version="4.0.0-nightly-00633" />
     <PackageReference Include="CoreCLR-NCalc" Version="2.2.70" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.3.1" />
     <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
     <PackageReference Include="Humanizer" Version="2.7.9" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\" />
     <Folder Include="Localization\" />
   </ItemGroup>
 

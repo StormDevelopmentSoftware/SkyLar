@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
@@ -14,35 +15,33 @@ namespace SkyLar
     public static class Utilities
     {
         public static readonly JsonSerializerSettings DEFAULT_JSON_SETTINGS = new JsonSerializerSettings { ContractResolver = new DefaultContractResolver { NamingStrategy = new SnakeCaseNamingStrategy(true, true) } };
+        public static readonly HttpClient DEFAULT_HTTP_CLIENT = new HttpClient();
 
         public static async Task<int> GetShardCountAsync(string token)
         {
             if (string.IsNullOrEmpty(token))
                 throw new ArgumentNullException(nameof(token));
 
-            using (var http = new HttpClient())
+            var req = new HttpRequestMessage(HttpMethod.Get, "https://discordapp.com/api/gateway/bot");
+            req.Headers.TryAddWithoutValidation("Authorization", $"Bot {token}");
+            req.Headers.TryAddWithoutValidation("Content-Type", "application/json");
+
+            using (req)
+            using (var res = await DEFAULT_HTTP_CLIENT.SendAsync(req))
             {
-                var req = new HttpRequestMessage(HttpMethod.Get, "https://discordapp.com/api/gateway/bot");
-                req.Headers.TryAddWithoutValidation("Authorization", $"Bot {token}");
-                req.Headers.TryAddWithoutValidation("Content-Type", "application/json");
+                var json = "{}";
 
-                using (req)
-                using (var res = await http.SendAsync(req))
-                {
-                    var json = "{}";
+                if (res.IsSuccessStatusCode)
+                    json = await res.Content.ReadAsStringAsync();
+                else
+                    throw new HttpRequestException(string.Format("Cannot fetch shard count from gateway. [{0}] {1}", (int)res.StatusCode, res.StatusCode));
 
-                    if (res.IsSuccessStatusCode)
-                        json = await res.Content.ReadAsStringAsync();
-                    else
-                        throw new HttpRequestException(string.Format("Cannot fetch shard count from gateway. [{0}] {1}", (int)res.StatusCode, res.StatusCode));
+                var jo = JObject.Parse(json);
 
-                    var jo = JObject.Parse(json);
-
-                    if (jo != null && jo["shards"] != null)
-                        return jo["shards"].Value<int>();
-                    else
-                        throw new InvalidOperationException("Cannot fetch shard count from gateway.");
-                }
+                if (jo != null && jo["shards"] != null)
+                    return jo["shards"].Value<int>();
+                else
+                    throw new InvalidOperationException("Cannot fetch shard count from gateway.");
             }
         }
 
@@ -106,5 +105,49 @@ namespace SkyLar
 
         public static string GetString(this byte[] bytes) =>
             Encoding.UTF8.GetString(bytes);
+
+        public static async Task<(bool success, string raw)> DownloadStringAsync(string url)
+        {
+            using(var res = await DEFAULT_HTTP_CLIENT.GetAsync(url))
+            {
+                if (!res.IsSuccessStatusCode)
+                    return (false, string.Empty);
+
+                try
+                {
+                    var str = await res.Content.ReadAsStringAsync();
+                    return (true, str);
+                }
+                catch { return (false, string.Empty); }
+            }
+        }
+
+        public static bool HasMatch(this Regex regex, string input, out Match match)
+        {
+            if (!regex.IsMatch(input))
+            {
+                match = null;
+                return false;
+            }
+            else
+            {
+                match = regex.Match(input);
+                return true;
+            }
+        }
+
+        public static bool HasMatches(this Regex regex, string input, out MatchCollection matches)
+        {
+            if (!regex.IsMatch(input))
+            {
+                matches = null;
+                return false;
+            }
+            else
+            {
+                matches = regex.Matches(input);
+                return true;
+            }
+        }
     }
 }

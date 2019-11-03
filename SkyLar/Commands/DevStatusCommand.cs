@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using Humanizer;
+using Humanizer.Bytes;
 using SkyLar.Attributes;
 
 namespace SkyLar.Commands
@@ -15,19 +16,15 @@ namespace SkyLar.Commands
         [DeveloperCommand]
         public async Task DevStatusCommand(CommandContext ctx)
         {
-            GC.Collect();
-            
             var os = Environment.OSVersion.VersionString;
-            var ram = Process.GetCurrentProcess().WorkingSet64;
+            var memory = Process.GetCurrentProcess().PrivateMemorySize64;
 
             await ctx.RespondWithEmbedAsync(ctx.GetBaseEmbed()
                 .AddField("OS", os, true)
-                .AddField("RAM", ram.Bytes().Humanize("#.## MB"), true)
+                .AddField("RAM", memory.Bytes().Humanize("#.## MB"), true)
                 .AddField("Ping", ctx.Client.Ping + "ms", true)
                 .AddField("DSharpPlus", ctx.Client.VersionString, true)
                 .AddField("Guilds", ctx.Client.Guilds.Count.ToString(), true));
         }
-
     }
-
 }
