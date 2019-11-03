@@ -28,18 +28,18 @@ namespace Filesystem
         private Server()
         {
             this.Client = new MongoClient();
-            this.Databases = GetDatabases().ToList();
+            this.Databases = this.GetDatabases().ToList();
         }
         private Server(string connectionString)
         {
             this.Client = new MongoClient(connectionString);
-            this.Databases = GetDatabases().ToList();
+            this.Databases = this.GetDatabases().ToList();
         }
 
-        IEnumerable<Database> GetDatabases()
+        private IEnumerable<Database> GetDatabases()
         {
-            List<Database> Data = new List<Database>();
-            var Dbs = Client.ListDatabaseNames().ToList();
+            var Data = new List<Database>();
+            var Dbs = this.Client.ListDatabaseNames().ToList();
             foreach (string name in Dbs)
             {
                 Data.Add(new Database(name, this));
@@ -48,7 +48,7 @@ namespace Filesystem
         }
         public void Refresh()
         {
-            this.Databases = GetDatabases().ToList();
+            this.Databases = this.GetDatabases().ToList();
         }
     }
 }

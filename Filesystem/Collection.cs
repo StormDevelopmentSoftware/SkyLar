@@ -13,19 +13,19 @@ namespace Filesystem
         public List<T> Documents { get; internal set; }
         public Collection(string name, Database database)
         {
-            IMongoDatabase db = database.Server.Client.GetDatabase(database.DatabaseName);
+            var db = database.Server.Client.GetDatabase(database.DatabaseName);
             if (!db.ListCollectionNames().ToList().Any(x => x == name))
             {
                 db.CreateCollection(name);
-                CollectionName = name;
-                Database = database;
-                Documents = new List<T>();
+                this.CollectionName = name;
+                this.Database = database;
+                this.Documents = new List<T>();
             }
             else
             {
-                CollectionName = name;
-                Database = database;
-                Documents = db.GetCollection<T>(name).Find(FilterDefinition<T>.Empty).ToList();
+                this.CollectionName = name;
+                this.Database = database;
+                this.Documents = db.GetCollection<T>(name).Find(FilterDefinition<T>.Empty).ToList();
             }
         }
         public void InsertDocument(T Document)

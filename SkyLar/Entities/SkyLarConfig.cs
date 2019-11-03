@@ -1,14 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
 using SkyLar.Entities.Config;
-using SkyLar.Utilities;
 
 namespace SkyLar.Entities
 {
     public class SkyLarConfig
     {
-        [JsonIgnore]
-        public static readonly SkyLarConfig Empty = new SkyLarConfig();
-
         [JsonProperty]
         public SkyLarDiscordConfig Discord { get; private set; } = new SkyLarDiscordConfig();
 
@@ -21,12 +20,43 @@ namespace SkyLar.Entities
         [JsonProperty]
         public SkylarDatabaseConfig Database { get; private set; } = new SkylarDatabaseConfig();
 
-        public static SkyLarConfig GetOrCreateDefault()
-        {
-            if (!FileUtilities.Exists("Config.json"))
-                FileUtilities.WriteJson(Empty, "Config.json");
+        [JsonProperty]
+        public int Version { get; set; } = 1;
 
-            return FileUtilities.ReadJson<SkyLarConfig>("Config.json");
+        public static async Task<SkyLarConfig> InitializeConfigurationAsync()
+        {
+            var config = new SkyLarConfig();
+            var file = new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), "Config.json"));
+
+            if (!file.Exists)
+            {
+                using(var writer = file.CreateText())
+                {
+                    await writer.WriteAsync(JsonConvert.SerializeObject(config, Formatting.Indented, Utilities.DEFAULT_JSON_SETTINGS));
+                    await writer.FlushAsync();
+                    return config;
+                }
+            }
+            else
+            {
+                using(var reader = file.OpenText())
+                {
+                    var json = await reader.ReadToEndAsync();
+
+                    if (string.IsNullOrEmpty(json))
+                        return config;
+
+                    try
+                    {
+                        config = JsonConvert.DeserializeObject<SkyLarConfig>(json, Utilities.DEFAULT_JSON_SETTINGS);
+                        return config;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new InvalidOperationException("Cannot initialize bot configuration.", ex);
+                    }
+                }
+            }
         }
     }
 }

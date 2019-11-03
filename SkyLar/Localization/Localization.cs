@@ -1,6 +1,4 @@
-﻿// File Localization.cs for the SkyLar Discord bot at 11/2/2019 12:14 AM.
-// (C) Storm Development Software - 2019. All Rights Reserved
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace SkyLar.Localization
@@ -27,15 +25,15 @@ namespace SkyLar.Localization
 
         public string GetString(string key)
         {
-            if (Strings.ContainsKey(key))
-                return Strings[key];
+            if (this.Strings.ContainsKey(key))
+                return this.Strings[key];
             return key;
         }
 
         [JsonIgnore]
         public string this[string key]
         {
-            get => GetString(key);
+            get => this.GetString(key);
         }
     }
 

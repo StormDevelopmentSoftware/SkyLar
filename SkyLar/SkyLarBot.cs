@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using DSharpPlus;
@@ -8,12 +9,12 @@ using DSharpPlus.Interactivity;
 using DSharpPlus.Lavalink;
 using Microsoft.Extensions.DependencyInjection;
 using SkyLar.Entities;
-using SkyLar.Localization;
 
 namespace SkyLar
 {
     public class SkyLarBot
     {
+        public static IReadOnlyDictionary<int, SkyLarBot> Shards { get; internal set; }
         public int ShardId { get; private set; }
         public int ShardCount { get; private set; }
         public SkyLarConfig Config { get; private set; }
@@ -23,9 +24,16 @@ namespace SkyLar
         public LavalinkExtension Lavalink { get; private set; }
         public IServiceProvider Services { get; private set; }
 
+        public static SkyLarBot GetShard(int id)
+        {
+            if (Shards.TryGetValue(id, out var bot))
+                return bot;
+
+            return null;
+        }
+
         public SkyLarBot(int shard_id, int shard_count, SkyLarConfig config)
         {
-            LocalizationManager.Load();
             this.ShardId = shard_id;
             this.ShardCount = shard_count;
             this.Config = config;
@@ -41,9 +49,8 @@ namespace SkyLar
             {
                 await e.Client.UpdateStatusAsync(new DiscordActivity
                 {
-                    ActivityType = ActivityType.Streaming,
+                    ActivityType = ActivityType.Watching,
                     Name = $"skylar help | {e.Client.Ping}ms",
-                    StreamUrl = "https://twitch.tv/#"
                 });
             };
 
@@ -51,9 +58,8 @@ namespace SkyLar
             {
                 await e.Client.UpdateStatusAsync(new DiscordActivity
                 {
-                    ActivityType = ActivityType.Streaming,
-                    Name = $"skylar help | {e.Ping}ms",
-                    StreamUrl = "https://twitch.tv/#"
+                    ActivityType = ActivityType.Watching,
+                    Name = $"skylar help | {e.Ping}ms"
                 });
             };
 
@@ -66,9 +72,8 @@ namespace SkyLar
             this.Interactivity = this.Discord.UseInteractivity(this.Config.Interactivity.Build());
             this.CommandsNext = this.Discord.UseCommandsNext(this.Config.CommandsNext.Build(this.Services));
 
-
-            CommandsNext.RegisterCommands(Assembly.GetEntryAssembly());
-            CommandsNext.SetHelpFormatter<HelpFormatter>();
+            this.CommandsNext.RegisterCommands(Assembly.GetEntryAssembly());
+            this.CommandsNext.SetHelpFormatter<SkyLarHelpFormatter>();
         }
 
         public async Task InitializeAsync()

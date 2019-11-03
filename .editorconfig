@@ -8,7 +8,12 @@ indent_style = space
 indent_size = 2
 
 [*.cs]
-dotnet_style_qualification_for_event = true:warning
-dotnet_style_qualification_for_field = true:warning
-dotnet_style_qualification_for_method = true:warning
-dotnet_style_qualification_for_property = true:warning
+dotnet_style_qualification_for_event = true:error
+dotnet_style_qualification_for_field = true:error
+dotnet_style_qualification_for_method = true:error
+dotnet_style_qualification_for_property = true:error
+dotnet_style_prefer_conditional_expression_over_return = true
+dotnet_style_null_propagation = true:suggestion
+dotnet_style_object_initializer = true:suggestion
+dotnet_style_explicit_tuple_names = true:error
+dotnet_style_prefer_auto_properties = true:suggestion

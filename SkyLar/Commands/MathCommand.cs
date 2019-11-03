@@ -14,7 +14,7 @@ namespace SkyLar.Commands
         [Command("math")]
         [CommandCategory(Category.Info)]
         [Description("Evaluates a math expression.\nValid functions: [Functions](https://github.com/ncalc/ncalc/wiki/Functions)")]
-        [CommandExamples("math 1+1", "math Cos(Pi)", "math 6*3")]
+        [Example("math 1+1", "math Cos(Pi)", "math 6*3")]
         public async Task MathCommand(CommandContext ctx, [RemainingText] string expression)
         {
             try
@@ -29,7 +29,6 @@ namespace SkyLar.Commands
             {
                 await ctx.RespondAsync($"{DiscordEmoji.FromGuildEmote(ctx.Client, 451145098470752286)} The expression was not valid! Use help for more information.");
             }
-
         }
     }
 }

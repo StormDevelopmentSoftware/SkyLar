@@ -1,12 +1,9 @@
-﻿// File RandomDogCommand.cs for the SkyLar Discord bot at 11/2/2019 2:28 PM.
-// (C) Storm Development Software - 2019. All Rights Reserved
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.Entities;
+using Newtonsoft.Json.Linq;
 using SkyLar.Attributes;
-using SkyLar.Utilities;
 
 namespace SkyLar.Commands
 {
@@ -16,23 +13,23 @@ namespace SkyLar.Commands
         [CommandCategory(Category.Fun)]
         public async Task RandomDogCommand(CommandContext ctx)
         {
-            HttpClient http = new HttpClient();
-            var jsonString = await http.GetStringAsync("https://dog.ceo/api/breeds/image/random");
-
-            var json = FileUtilities.FromJson(jsonString);
-
-            if (json["status"].ToString() == "success")
+            using (var http = new HttpClient())
             {
-                var url = json["message"].ToString();
-                await ctx.RespondWithEmbedAsync(new DiscordEmbedBuilder(ctx.BaseEmbed())
+                var raw = await http.GetStringAsync("https://dog.ceo/api/breeds/image/random");
+                var json = JObject.Parse(raw);
+
+                if (json["status"].ToString() == "success")
                 {
-                    ImageUrl = url,
-                    Title = ":dog: Random Dog",
-                });
-            }
-            else
-            {
-                await ctx.RespondAsync("<:ptr_err:451145098470752286> An error occurred while contacting the Random Dog API. Please try again later.");
+                    var url = json["message"].ToString();
+
+                    await ctx.RespondWithEmbedAsync(ctx.GetBaseEmbed()
+                        .WithImageUrl(url)
+                        .WithTitle(":dog: Random Dog"));
+                }
+                else
+                {
+                    await ctx.RespondAsync("<:ptr_err:451145098470752286> An error occurred while contacting the Random Dog API. Please try again later.");
+                }
             }
         }
     }

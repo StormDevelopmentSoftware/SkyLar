@@ -14,7 +14,7 @@ namespace Filesystem
             if (!String.IsNullOrWhiteSpace(name))
             {
                 this.Server = server;
-                IMongoDatabase db = this.Server.Client.GetDatabase(name);
+                var db = this.Server.Client.GetDatabase(name);
                 this.DatabaseName = name;
                 this.Collections = db.ListCollectionNames().ToList();
             }
@@ -24,7 +24,7 @@ namespace Filesystem
         public void Drop()
         {
             this.Server.Client.DropDatabase(this.DatabaseName);
-            Refresh();
+            this.Refresh();
         }
         public void Refresh()
         {
