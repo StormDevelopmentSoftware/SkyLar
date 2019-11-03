@@ -24,6 +24,9 @@ namespace SkyLar
 
             var config = await SkyLarConfig.InitializeConfigurationAsync();
 
+            if (string.IsNullOrEmpty(config.Discord.Token))
+                throw new InvalidOperationException("You MUST change bot token in configuration before run.");
+
             await InitializeShardsAsync(config);
 
             while (!Cts.IsCancellationRequested)

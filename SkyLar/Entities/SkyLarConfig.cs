@@ -20,7 +20,7 @@ namespace SkyLar.Entities
         [JsonProperty]
         public SkylarDatabaseConfig Database { get; private set; } = new SkylarDatabaseConfig();
 
-        [JsonProperty]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
         public int Version { get; set; } = 1;
 
         public static async Task<SkyLarConfig> InitializeConfigurationAsync()
@@ -49,12 +49,13 @@ namespace SkyLar.Entities
                     try
                     {
                         config = JsonConvert.DeserializeObject<SkyLarConfig>(json, Utilities.DEFAULT_JSON_SETTINGS);
-                        return config;
                     }
                     catch (Exception ex)
                     {
                         throw new InvalidOperationException("Cannot initialize bot configuration.", ex);
                     }
+
+                    return config;
                 }
             }
         }
