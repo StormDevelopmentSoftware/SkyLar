@@ -27,10 +27,6 @@
   <ItemGroup>
     <Folder Include="Localization\" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Logic\Logic.csproj" />
-  </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
       <Properties>

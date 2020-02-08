@@ -5,15 +5,6 @@ VisualStudioVersion = 16.0.29409.12
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkyLar", "SkyLar\SkyLar.csproj", "{5957403B-F90C-41F6-BEB8-F0D38FC07852}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic", "Logic\Logic.csproj", "{F9B8198A-1C87-4A05-AC04-0E0807A29F1C}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Filesystem", "Filesystem\Filesystem.csproj", "{E2472368-A537-497B-894C-C1572D19BAD8}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2226CE05-D034-4809-8AB5-E3F20F42BC49}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,14 +15,6 @@ Global
 		{5957403B-F90C-41F6-BEB8-F0D38FC07852}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5957403B-F90C-41F6-BEB8-F0D38FC07852}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5957403B-F90C-41F6-BEB8-F0D38FC07852}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F9B8198A-1C87-4A05-AC04-0E0807A29F1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F9B8198A-1C87-4A05-AC04-0E0807A29F1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F9B8198A-1C87-4A05-AC04-0E0807A29F1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F9B8198A-1C87-4A05-AC04-0E0807A29F1C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E2472368-A537-497B-894C-C1572D19BAD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E2472368-A537-497B-894C-C1572D19BAD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E2472368-A537-497B-894C-C1572D19BAD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E2472368-A537-497B-894C-C1572D19BAD8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
