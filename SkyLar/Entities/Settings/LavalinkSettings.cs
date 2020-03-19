@@ -55,11 +55,21 @@ namespace SkyLar.Entities.Settings
                 SocketEndpoint = this.SocketEndpoint,
             };
         }
+    }
 
-        public enum LavalinkVersion : byte
-        {
-            V2,
-            V3
-        }
+    /// <summary>
+    /// Representa a versão do lavalink.
+    /// </summary>
+    public enum LavalinkVersion : byte
+    {
+        /// <summary>
+        /// Versão 2
+        /// </summary>
+        V2 = 2,
+
+        /// <summary>
+        /// Versão 3
+        /// </summary>
+        V3 = 3
     }
 }
