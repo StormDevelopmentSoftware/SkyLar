@@ -49,7 +49,7 @@ namespace SkyLar
         /// Obtém a instância de uma shard.
         /// </summary>
         /// <param name="i">Identificador da shard.</param>
-        /// <returns></returns>
+        /// <returns>Instância da shard se existir ou nulo se a shard não existir.</returns>
         public SkyLarShard this[int i]
         {
             get
