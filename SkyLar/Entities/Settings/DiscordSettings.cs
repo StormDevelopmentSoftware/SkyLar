@@ -1,56 +1,59 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using DSharpPlus;
 using Newtonsoft.Json;
 
 namespace SkyLar.Entities.Settings
 {
-    public class DiscordSettings
-    {
-        [JsonProperty]
-        public string Token { get; protected set; }
+	public class DiscordSettings
+	{
+		[JsonIgnore]
+		protected string TokenInternal;
 
-        [JsonProperty]
-        public bool AutoReconnect { get; protected set; } = true;
+		[JsonProperty]
+		public string Token
+		{
+			get => string.Empty;
+			set => this.TokenInternal = value;
+		}
 
-        [JsonProperty]
-        public bool ReconnectIndefinitely { get; protected set; } = false;
+		[JsonIgnore]
+		public bool HasInvalidToken => string.IsNullOrEmpty(this.TokenInternal);
 
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public int ShardCount { get; protected set; } = default;
+		[JsonProperty]
+		public GatewayCompressionLevel GatewayCompressionLevel { get; private set; } = GatewayCompressionLevel.Stream;
 
-        [JsonProperty]
-        public TimeSpan HttpTimeout { get; protected set; } = TimeSpan.FromMinutes(1.5d);
+		[JsonProperty]
+		public bool AutoReconnect { get; private set; } = true;
 
-        [JsonProperty]
-        public GatewayCompressionLevel GatewayCompressionLevel { get; protected set; } = GatewayCompressionLevel.Stream;
+		[JsonProperty]
+		public bool ReconnectIndefinitely { get; private set; } = false;
 
-        [JsonProperty]
-        public int MessageCacheSize { get; private set; } = 1024;
+		[JsonProperty]
+		public TimeSpan HttpTimeout { get; private set; } = TimeSpan.FromSeconds(30d);
 
-        [JsonProperty]
-        public int LargeThreshold { get; private set; } = 250;
+		public DiscordConfiguration Build(int shardId, int shardCount)
+		{
+			return new DiscordConfiguration
+			{
+				Token = this.TokenInternal,
+				TokenType = TokenType.Bot,
+				AutoReconnect = this.AutoReconnect,
+				GatewayCompressionLevel = this.GatewayCompressionLevel,
+				HttpTimeout = this.HttpTimeout,
+				ReconnectIndefinitely = this.ReconnectIndefinitely,
+				ShardId = shardId,
+				ShardCount = shardCount,
 
-        public DiscordConfiguration Build(int id, int count)
-        {
-            var szTokenChars = new char[this.Token.Length];
-            this.Token.CopyTo(0, szTokenChars, 0, szTokenChars.Length);
-
-            return new DiscordConfiguration
-            {
-                Token = new string(szTokenChars),
-                TokenType = TokenType.Bot,
-                AutoReconnect = this.AutoReconnect,
-                ReconnectIndefinitely = this.ReconnectIndefinitely,
-                GatewayCompressionLevel = this.GatewayCompressionLevel,
-                HttpTimeout = this.HttpTimeout,
-                MessageCacheSize = this.MessageCacheSize,
-                LargeThreshold = this.LargeThreshold,
-                ShardId = id,
-                ShardCount = count
-            };
-        }
-
-        public void Reset()
-            => this.Token = default;
-    }
+#if USING_INTERNAL_LOGGER
+				DateTimeFormat = "HH:mm:ss.fff",
+				LogLevel = LogLevel.Debug,
+				UseInternalLogHandler = true
+#endif
+			};
+		}
+	}
 }

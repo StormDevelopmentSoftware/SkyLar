@@ -1,57 +1,124 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
-using DSharpPlus;
-using DSharpPlus.CommandsNext;
-using DSharpPlus.Interactivity;
-using DSharpPlus.Lavalink;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Linq;
 using SkyLar.Entities;
 
 namespace SkyLar
 {
-    public sealed class SkyLarBot
-    {
-        public static IReadOnlyDictionary<int, SkyLarBot> Shards { get; internal set; }
-        public DiscordClient Discord { get; private set; }
-        public CommandsNextExtension CommandsNext { get; private set; }
-        public InteractivityExtension Interactivity { get; private set; }
-        public LavalinkExtension Lavalink { get; private set; }
-        public IServiceProvider Services { get; private set; }
+	public class SkyLarBot
+	{
+		/// <summary>
+		/// Ctor estático, registra um servidor HttpClient global.
+		/// </summary>
+		static SkyLarBot()
+		{
+			Singleton<HttpClient>.Instance = new HttpClient(new HttpClientHandler
+			{
+				AllowAutoRedirect = true,
+				AutomaticDecompression = DecompressionMethods.All,
+				UseCookies = true
+			});
+		}
 
-        public SkyLarBot(int shard_id, int shard_count)
-        {
-            var config = SkyLarSettings.GetInstance();
+		/// <summary>
+		/// Configuração global da skylar.
+		/// </summary>
+		public SkyLarConfiguration Config { get; private set; }
 
-            this.Discord = new DiscordClient(new DiscordConfiguration(config.Discord.Build(shard_id, shard_count)));
-            this.Lavalink = this.Discord.UseLavalink();
-            this.Interactivity = this.Discord.UseInteractivity(config.Interactivity.Build());
+		/// <summary>
+		/// Contém as shards registradas.
+		/// </summary>
+		public IReadOnlyDictionary<int, SkyLarShard> Shards { get; private set; }
 
-            this.Services = new ServiceCollection()
-                .AddSingleton(this)
-                //.AddSingleton<DatabaseService>()
-                //.AddSingleton<CommandService>()
-                .BuildServiceProvider();
+		public SkyLarBot(SkyLarConfiguration config)
+		{
+			Singleton<SkyLarBot>.Instance = this;
+			this.Config = config;
+		}
 
-            this.CommandsNext = this.Discord.UseCommandsNext(new CommandsNextConfiguration
-            {
-                UseDefaultCommandHandler = false,
-                Services = this.Services
-            });
-        }
+		/// <summary>
+		/// Obtém a shard pelo ID.
+		/// </summary>
+		/// <param name="i">ID da shard.</param>
+		/// <returns></returns>
+		public SkyLarShard this[int i]
+		{
+			get
+			{
+				if (this.Shards.TryGetValue(i, out var shard))
+					return shard;
 
-        public static SkyLarBot GetShard(int id)
-        {
-            if (Shards.TryGetValue(id, out var shard))
-                return shard;
+				return default;
+			}
+		}
 
-            return default;
-        }
+		/// <summary>
+		/// Iniciar o bot.
+		/// </summary>
+		public async Task InitializeAsync()
+		{
+			await this.SetupShardsAsync();
 
-        public Task InitializeAsync()
-            => this.Discord.ConnectAsync();
+			var tasks = new List<Task>();
 
-        public Task ShutdownAsync()
-            => this.Discord.DisconnectAsync();
-    }
+			foreach (var shard in this.Shards.Select(x => x.Value))
+				tasks.Add(shard.InitializeAsync());
+
+			await Task.WhenAll(tasks);
+		}
+
+		/// <summary>
+		/// Finaliza o bot.
+		/// </summary>
+		public async Task ShutdownAsync()
+		{
+			var tasks = new List<Task>();
+
+			foreach (var shard in this.Shards.Select(x => x.Value))
+				tasks.Add(shard.ShutdownAsync());
+
+			await Task.WhenAll(tasks);
+		}
+
+		/// <summary>
+		/// Configura cada shard imediatamente.
+		/// </summary>
+		protected async Task SetupShardsAsync()
+		{
+			var http = Singleton<HttpClient>.Get();
+
+			var tokenInternal = this.Config.Discord.GetType()
+				.GetField("TokenInternal", BindingFlags.NonPublic | BindingFlags.Instance)
+				.GetValue(this.Config.Discord)
+				.ToString();
+
+			using var request = new HttpRequestMessage(HttpMethod.Get, "https://discordapp.com/api/gateway/bot");
+			request.Headers.TryAddWithoutValidation("Authorization", $"Bot {tokenInternal}");
+
+			using var response = await http.SendAsync(request);
+
+			if (!response.IsSuccessStatusCode)
+				throw new InvalidOperationException($"Cannot initialize shards. {(int)response.StatusCode}: {response.StatusCode}");
+
+			var raw = await response.Content.ReadAsStringAsync();
+			var json = JObject.Parse(raw);
+
+			if (json["shards"] == null)
+				throw new InvalidOperationException("Cannot initialize shards. Unknown payload received from gateway.");
+
+			var temp = new Dictionary<int, SkyLarShard>();
+			var count = json.Value<int>("shards");
+
+			for (var i = 0; i < count; i++)
+				temp[i] = new SkyLarShard(this, this.Config.Discord.Build(i, count));
+
+			this.Shards = temp;
+		}
+	}
 }

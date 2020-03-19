@@ -1,38 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using SkyLar.Entities;
 
 namespace SkyLar
 {
-    static class Program
-    {
-        static readonly CancellationTokenSource cts = new CancellationTokenSource();
+	static class Program
+	{
+		static readonly CancellationTokenSource Cts
+			= new CancellationTokenSource();
 
-        static async Task Main(string[] args)
-        {
-            await Utilities.InitializeShardsAsync();
+		static async Task Main(string[] args)
+		{
+			var config = await SkyLarConfiguration.LoadAsync();
+			Singleton<SkyLarConfiguration>.Instance = config;
 
-            var tasks = new List<Task>();
+			if (!config.Discord.HasInvalidToken)
+			{
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.WriteLine("Token cannot be null, empty or invalid.");
+				Console.ResetColor();
+				return;
+			}
 
-            foreach(var shard in SkyLarBot.Shards.Select(x => x.Value))
-                tasks.Add(shard.InitializeAsync().ContinueWith(_ => Task.Delay(1500)));
+			var bot = new SkyLarBot(config);
+			await bot.InitializeAsync();
 
-            await Task.WhenAll(tasks);
+			while (!Cts.IsCancellationRequested)
+				await Task.Delay(1);
 
-            GC.Collect();
-
-            while (!cts.IsCancellationRequested)
-                await Task.Delay(1);
-
-            tasks = new List<Task>();
-
-            foreach (var bot in SkyLarBot.Shards.Select(x => x.Value))
-                tasks.Add(bot.ShutdownAsync().ContinueWith(_ => Task.Delay(1500)));
-
-            await Task.WhenAll(tasks);
-        }
-    }
+			await bot.ShutdownAsync();
+		}
+	}
 }
