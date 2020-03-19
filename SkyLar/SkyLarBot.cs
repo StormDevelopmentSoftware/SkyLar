@@ -35,6 +35,10 @@ namespace SkyLar
         /// </summary>
         public IReadOnlyDictionary<int, SkyLarShard> Shards { get; private set; }
 
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="config">Referência da configuração importada.</param>
         public SkyLarBot(SkyLarConfiguration config)
         {
             Singleton<SkyLarBot>.Instance = this;
@@ -42,9 +46,9 @@ namespace SkyLar
         }
 
         /// <summary>
-        /// Obtém a shard pelo ID.
+        /// Obtém a instância de uma shard.
         /// </summary>
-        /// <param name="i">ID da shard.</param>
+        /// <param name="i">Identificador da shard.</param>
         /// <returns></returns>
         public SkyLarShard this[int i]
         {
@@ -86,7 +90,7 @@ namespace SkyLar
         }
 
         /// <summary>
-        /// Configura cada shard imediatamente.
+        /// Configurar shards.
         /// </summary>
         protected async Task SetupShardsAsync()
         {
