@@ -12,14 +12,15 @@ namespace SkyLar
 
         static async Task Main(string[] args)
         {
-            var config = await SkyLarConfiguration.LoadAsync();
+            var config = await SkyLarConfiguration.InitializeAsync();
             Singleton<SkyLarConfiguration>.Instance = config;
 
-            if (!config.Discord.HasInvalidToken)
+            if (config.Discord.HasInvalidToken)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Token cannot be null, empty or invalid.");
                 Console.ResetColor();
+                Console.ReadLine();
                 return;
             }
 
