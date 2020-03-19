@@ -1,9 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
 using DSharpPlus;
+using DSharpPlus.CommandsNext;
+using DSharpPlus.Interactivity;
+using DSharpPlus.Lavalink;
+using SkyLar.Extensions;
 
 namespace SkyLar
 {
+    /// <summary>
+    /// Representa a classe da shard da skylar.
+    /// </summary>
     public class SkyLarShard
     {
         /// <summary>
@@ -30,6 +37,24 @@ namespace SkyLar
         {
             this.Bot = bot;
             this.Discord = new DiscordClient(config);
+            this.SetupShard();
+        }
+
+        /// <summary>
+        /// Configurar a shard internalmente.
+        /// </summary>
+        protected void SetupShard()
+        {
+            var cnext = this.Discord.UseCommandsNext(new CommandsNextConfiguration
+            {
+                UseDefaultCommandHandler = false
+            });
+
+            cnext.RegisterCommands(typeof(SkyLarShard).Assembly);
+            cnext.RegisterArgumentConverters();
+
+            this.Discord.UseInteractivity(this.Bot.Config.Interactivity.Build());
+            this.Discord.UseLavalink();
         }
 
         /// <summary>
