@@ -15,7 +15,7 @@ namespace SkyLar.Entities
 		{
 			ContractResolver = new DefaultContractResolver
 			{
-				NamingStrategy = new CamelCaseNamingStrategy(true, true)
+				NamingStrategy = new SnakeCaseNamingStrategy(true, true)
 			}
 		};
 
