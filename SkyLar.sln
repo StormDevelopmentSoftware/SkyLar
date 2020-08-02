@@ -1,11 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30309.148
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyLar", "SkyLar\SkyLar.csproj", "{A59ACAD3-88FB-46CE-B1A8-92481EE1883A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkyLar", "SkyLar\SkyLar.csproj", "{A59ACAD3-88FB-46CE-B1A8-92481EE1883A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyLar.Core", "SkyLar.Core\SkyLar.Core.csproj", "{CFC3C45D-2883-4A7F-9A49-2E7EB05338EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkyLar.Core", "SkyLar.Core\SkyLar.Core.csproj", "{CFC3C45D-2883-4A7F-9A49-2E7EB05338EE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BBA7E74B-60E0-4485-BC0B-9D163AB18E3E}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +20,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{A59ACAD3-88FB-46CE-B1A8-92481EE1883A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -44,5 +46,11 @@ Global
 		{CFC3C45D-2883-4A7F-9A49-2E7EB05338EE}.Release|x64.Build.0 = Release|Any CPU
 		{CFC3C45D-2883-4A7F-9A49-2E7EB05338EE}.Release|x86.ActiveCfg = Release|Any CPU
 		{CFC3C45D-2883-4A7F-9A49-2E7EB05338EE}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F27B3A07-0CB5-408A-8BEF-80FF7BDA8646}
 	EndGlobalSection
 EndGlobal
