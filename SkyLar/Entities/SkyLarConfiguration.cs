@@ -7,7 +7,10 @@ namespace SkyLar.Entities
 {
 	public class SkyLarConfiguration
 	{
+		[JsonProperty]
 		public DiscordSettings Discord { get; private set; } = new DiscordSettings();
+
+		[JsonProperty]
 		public InteractivitySettings Interactivity { get; private set; } = new InteractivitySettings();
 
 		[JsonIgnore]
@@ -15,7 +18,7 @@ namespace SkyLar.Entities
 		{
 			ContractResolver = new DefaultContractResolver
 			{
-				NamingStrategy = new SnakeCaseNamingStrategy(true, true)
+				NamingStrategy = new SnakeCaseNamingStrategy()
 			}
 		};
 

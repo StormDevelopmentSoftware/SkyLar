@@ -5,9 +5,12 @@
 		<PlatformTarget>x64</PlatformTarget>
 	</PropertyGroup>
 	<ItemGroup>
+	  <None Remove="SkyLarBot.cs~RFb9363e.TMP" />
+	</ItemGroup>
+	<ItemGroup>
 	  <PackageReference Include="DSharpPlus" Version="4.0.0-nightly-00711" />
+	  <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-nightly-00711" />
 	  <PackageReference Include="DSharpPlus.Interactivity" Version="4.0.0-nightly-00711" />
-	  <PackageReference Include="Qmmands" Version="3.1.2" />
 	  <PackageReference Include="Serilog" Version="2.9.0" />
 	  <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
 	</ItemGroup>
