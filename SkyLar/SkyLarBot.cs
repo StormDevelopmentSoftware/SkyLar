@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.EventArgs;
 using DSharpPlus.Interactivity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using SkyLar.Database;
 using SkyLar.Entities;
+using SkyLar.Entities.Discord;
 
 namespace SkyLar
 {
@@ -38,15 +42,19 @@ namespace SkyLar
 			this.Discord.DebugLogger.LogMessageReceived += this.DebugLogger_LogMessageReceived;
 			this.Discord.ClientErrored += this.Discord_ClientErrored;
 			this.Discord.Heartbeated += this.Discord_Heartbeated;
+			this.Discord.GuildDownloadCompleted += this.Discord_GuildDownloadCompleted;
+			this.Discord.GuildCreated += this.Discord_GuildCreated;
+			this.Discord.GuildDeleted += this.Discord_GuildDeleted;
 			this.Interactivity = this.Discord.UseInteractivity(this.Configuration.Interactivity.Build());
 
 			this.Services = new ServiceCollection()
+				.AddTransient(t => new SkyLarContext(configuration.Database.ToString()))
 				.BuildServiceProvider(true);
 
 			this.CommandsNext = this.Discord.UseCommandsNext(new CommandsNextConfiguration
 			{
-				UseDefaultCommandHandler = false,
-				EnableDefaultHelp = false,
+				UseDefaultCommandHandler = true,
+				EnableDefaultHelp = true,
 				EnableMentionPrefix = true,
 				Services = this.Services
 			});
@@ -89,6 +97,51 @@ namespace SkyLar
 
 			Log.Verbose(e.Exception, $"[{{Context}}] #{{ShardId}}: {e.Message}", e.Application, this.ShardId, e.Message);
 		}
+
+		async Task Discord_GuildDownloadCompleted(GuildDownloadCompletedEventArgs e)
+		{
+			using (var scope = Services.CreateScope())
+			using (var db = scope.ServiceProvider.GetService<SkyLarContext>())
+			{
+				foreach (var guild in e.Guilds.Keys)
+				{
+					if (!db.Guilds.Where(x => x.GuildID == guild).Any())
+					{
+						db.Guilds.Add(new SkyLarGuild
+						{
+							GuildID = guild
+						});
+					}
+				}
+
+				await db.Guilds.Where(x => !e.Guilds.Keys.Any(y => y == x.GuildID)).ForEachAsync(x => db.Remove(x));
+				await db.SaveChangesAsync();
+			}
+		}
+
+		async Task Discord_GuildDeleted(GuildDeleteEventArgs e)
+		{
+			using (var scope = Services.CreateScope())
+			using (var db = scope.ServiceProvider.GetService<SkyLarContext>())
+			{
+				db.Remove(db.Guilds.Where(x => x.GuildID == e.Guild.Id));
+				await db.SaveChangesAsync();
+			}
+		}
+
+		async Task Discord_GuildCreated(GuildCreateEventArgs e)
+		{
+			using (var scope = Services.CreateScope())
+			using (var db = scope.ServiceProvider.GetService<SkyLarContext>())
+			{
+				db.Guilds.Add(new SkyLarGuild
+				{
+					GuildID = e.Guild.Id
+				});
+				await db.SaveChangesAsync();
+			}
+		}
+
 
 		public Task StartAsync()
 			=> this.Discord.ConnectAsync();

@@ -13,6 +13,9 @@ namespace SkyLar.Entities
 		[JsonProperty]
 		public InteractivitySettings Interactivity { get; private set; } = new InteractivitySettings();
 
+		[JsonProperty]
+		public DatabaseSettings Database { get; private set; } = new DatabaseSettings();
+
 		[JsonIgnore]
 		internal static readonly JsonSerializerSettings DefaultJsonSettings = new JsonSerializerSettings
 		{

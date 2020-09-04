@@ -39,4 +39,10 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F27B3A07-0CB5-408A-8BEF-80FF7BDA8646}
 	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.StandardHeader = $1
+		$1.Text = @File ${FileName} created by ${AuthorName} (${AuthorEmail}) at ${Date} ${Time}.\n${CopyrightHolder}
+		$1.IncludeInNewFiles = False
+	EndGlobalSection
 EndGlobal
