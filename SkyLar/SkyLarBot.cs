@@ -45,6 +45,7 @@ namespace SkyLar
 			this.Discord.GuildDownloadCompleted += this.Discord_GuildDownloadCompleted;
 			this.Discord.GuildCreated += this.Discord_GuildCreated;
 			this.Discord.GuildDeleted += this.Discord_GuildDeleted;
+			this.Discord.MessageCreated += this.Discord_MessageCreated;
 			this.Interactivity = this.Discord.UseInteractivity(this.Configuration.Interactivity.Build());
 
 			this.Services = new ServiceCollection()
@@ -53,13 +54,47 @@ namespace SkyLar
 
 			this.CommandsNext = this.Discord.UseCommandsNext(new CommandsNextConfiguration
 			{
-				UseDefaultCommandHandler = true,
+				UseDefaultCommandHandler = false,
 				EnableDefaultHelp = true,
-				EnableMentionPrefix = true,
 				Services = this.Services
 			});
 
 			this.CommandsNext.RegisterCommands(typeof(SkyLarBot).Assembly);
+		}
+
+		Task Discord_MessageCreated(MessageCreateEventArgs e)
+		{
+			if (e.Author.IsBot)
+				return Task.CompletedTask;
+			if (e.Channel.IsPrivate)
+				return Task.CompletedTask;
+
+			using (var scope = Services.CreateScope())
+			using (var db = scope.ServiceProvider.GetService<SkyLarContext>())
+			{
+				var mpos = e.Message.GetMentionPrefixLength(e.Client.CurrentUser);
+				var prefixes = db.Guilds.Where(x => x.GuildID == e.Guild.Id).First().Prefixes;
+
+				foreach (var prefix in prefixes.Where(prefix => mpos == -1 && !string.IsNullOrWhiteSpace(prefix)))
+					mpos = e.Message.GetStringPrefixLength(prefix, StringComparison.OrdinalIgnoreCase);
+
+				if (mpos == -1) return Task.CompletedTask; 
+
+				var pfx = e.Message.Content.Substring(0, mpos);
+				var cnt = e.Message.Content.Substring(mpos);
+
+				var __ = 0;
+				var fname = cnt.ExtractNextArgument(ref __);
+
+				var cmd = this.CommandsNext.FindCommand(cnt, out var args);
+				var ctx = this.CommandsNext.CreateContext(e.Message, pfx, cmd, args);
+
+				if (cmd == null) return Task.CompletedTask;
+
+				_ = Task.Run(async () => await this.CommandsNext.ExecuteCommandAsync(ctx));
+				return Task.CompletedTask;
+			}
+
 		}
 
 		Task Discord_Ready(ReadyEventArgs e)

@@ -21,18 +21,8 @@ namespace SkyLar.Commands
 		[Command]
 		public async Task Test(CommandContext ctx)
 		{
-			if (!db.Guilds.Any(x => x.GuildID == ctx.Guild.Id))
-			{
-				await ctx.RespondAsync("Não tenho esta guild na base de dados, inserindo com o prefixo `s!`");
-				await db.AddAsync(new SkyLarGuild
-				{
-					GuildID = ctx.Guild.Id,
-					Prefixes = new string[] { "s!" }
-				});
-				await db.SaveChangesAsync();
-			}
-			SkyLarGuild guild = db.Guilds.Where(x => x.GuildID == ctx.Guild.Id).First();
-			await ctx.RespondAsync("Hi! Número pessoas aqui: ID interno " + guild.ID + " | " + (await guild.GetDiscordGuildAsync(ctx.Client)).Name );
+			var guild = db.Guilds.Where(x => x.GuildID == ctx.Guild.Id).First();
+			await ctx.RespondAsync($"Esta guild é {ctx.Guild.Name}, com ID interno `{guild.ID}`. Os prefixos são `{string.Join(", ", guild.Prefixes)}` -- e você usou o prefixo {ctx.Prefix}.");
 		}
 	}
 }
